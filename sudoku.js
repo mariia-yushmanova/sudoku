@@ -1,27 +1,41 @@
-// используй дальше board
+const gradient = require('gradient-string');
+const tinycolor = require("tinycolor2");
 
-//  функция ищет первую попавшуюся чёрточку и возвращает её индекс
-function findEmptyField(board) {
-  // переменная для результата
-  const arrPosition = [];
-  // перебор по массивам
-  for (let i = 0; i < board.length; i += 1) {
-    // поиск элемента с чёрточкой и возврат его индекса
-    const a = board[i].findIndex((el) => el === "-");
+function solve(boardString) {
+  const board = [];
+  let arrBoard = boardString.split("");
+  for (let i = 0; i < arrBoard.length; i += 9) {
+    const check = arrBoard.slice(i, i + 9);
+    board.push(check);
+  }
 
-    if (a >= 0) {
-      //  тут я беру индекс массива в котором есть чёрточки
-      // console.log(board[i]);
-      arrPosition.push(board.findIndex((el) => el === board[i]));
-      //  тут я добавляю индекс самой чёрточки
-      arrPosition.push(a);
-      // тут была проверка,что нам возвращает результат в консоль
-      // console.log(result);
-      // console.log(arrPosition);
+  // используй дальше board
+
+  //  функция ищет первую попавшуюся чёрточку и возвращает её индекс
+  function findEmptyField(board) {
+    //переменная для результата
+    const arrPosition = [];
+    // перебор по массивам
+    for (let i = 0; i < board.length; i++) {
+      // поиск элемента с чёрточкой и возврат его индекса
+      a = board[i].findIndex((el) => el === "-");
+
+      if (a >= 0) {
+        //  тут я беру индекс массива в котором есть чёрточки
+        console.log(board[i]);
+        arrPosition.push(board.findIndex((el) => el === board[i]));
+        //  тут я добавляю индекс самой чёрточки
+        arrPosition.push(a);
+        // тут была проверка,что нам возвращает результат в консоль
+        return arrPosition;
+      }
     }
   }
-  return arrPosition;
+
+  const position = findEmptyField(board);
+  console.table(board);
 }
+
 // принимает проверяемое число, его позицию в виде массива и саму доску
 // возвращает true или false в зависимости прошла проверка или нет
 function checkValidity(number, position, board) {
@@ -62,33 +76,48 @@ function fillNumber(board) {
 }
 
 /**
- * Принимает игровое поле в формате строки — как в файле sudoku-puzzles.txt.
- * Возвращает игровое поле после попытки его решить.
- * Договорись со своей командой, в каком формате возвращать этот результат.
- */
-function solve(boardString) {
-  const board = [];
-  const arrBoard = boardString.split("");
-  for (let i = 0; i < arrBoard.length; i += 9) {
-    const check = arrBoard.slice(i, i + 9);
-    board.push(check);
-  }
-  fillNumber(board);
-  console.log(board);
-  return board;
-}
-/**
  * Принимает игровое поле в том формате, в котором его вернули из функции solve.
  * Возвращает булевое значение — решено это игровое поле или нет.
  */
+
 function isSolved(board) {}
 
-/**
- * Принимает игровое поле в том формате, в котором его вернули из функции solve.
- * Возвращает строку с игровым полем для последующего вывода в консоль.
- * Подумай, как симпатичнее сформировать эту строку.
- */
-function prettyBoard(board) {}
+
+const proverka = [
+  ["1", "4", "5", "8", "9", "2", "6", "7", "3"],
+  ["8", "9", "3", "1", "7", "6", "4", "2", "5"],
+  ["2", "7", "6", "4", "3", "5", "8", "1", "9"],
+  ["5", "1", "9", "2", "4", "7", "3", "8", "6"],
+  ["7", "6", "2", "5", "8", "3", "1", "9", "4"],
+  ["3", "8", "4", "9", "6", "1", "7", "5", "2"],
+  ["9", "5", "7", "6", "1", "4", "2", "3", "8"],
+  ["4", "3", "8", "7", "2", "9", "5", "6", "1"],
+  ["6", "2", "1", "3", "5", "8", "9", "4", "7"],
+];
+
+function isSolved(board) {
+  let sum = 0;
+  for (let i = 0; i < board.length; i += 1) {
+    const sumStr = board[i].reduce((a, b) => Number(a) + Number(b));
+    sum += sumStr;
+  }
+  if (sum === 405) {
+    return true;
+  } else {
+    return false;
+  }
+}
+console.log(isSolved(proverka));
+
+
+function prettyBoard(board) {
+  specialBoard = board.map((elem) =>  '\n' + '|   ' + elem.join('-') + '   |' + '\n'  ).join('');
+  let coolGradient = gradient(tinycolor.random(),tinycolor.random(),tinycolor.random(),tinycolor.random())
+  
+  console.log(coolGradient(specialBoard));
+  return coolGradient(specialBoard);
+}
+
 
 // Экспортировать функции для использования в другом файле (например, readAndSolve.js).
 module.exports = {
