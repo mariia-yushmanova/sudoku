@@ -34,26 +34,22 @@ function solve(boardString) {
 
   const position = findEmptyField(board);
   console.table(board);
-
-  //принимает проверяемое число, его позицию (в виде массива или отдельно индексов)
-  //и саму доску. возвращает true или false в зависимости прошла проверка или нет
-
-  checkValidity(2, position, board);
 }
 
-// Проверяет повтор 1-9 в квадрате
-function checkValidity(number, position /*row, col*/, board) {
+// принимает проверяемое число, его позицию в виде массива и саму доску
+// возвращает true или false в зависимости прошла проверка или нет
+function checkValidity(number, position, board) {
   const [row, col] = position;
   const boardSize = 9;
-  //проверка наличия числа в строке
+  // проверка наличия числа в столбце
   for (let i = 0; i < boardSize; i += 1) {
     if (board[i][col] === number) return false;
   }
-  //проверка наличия числа в столбце
+  // проверка наличия числа в строке
   for (let j = 0; j < boardSize; j += 1) {
     if (board[row][j] === number) return false;
   }
-  //проверка наличия числа в блоке 3х3
+  // проверка наличия числа в блоке 3х3
   const blockRowStart = Math.floor(row / 3) * 3;
   const blockColStart = Math.floor(col / 3) * 3;
 
@@ -62,7 +58,21 @@ function checkValidity(number, position /*row, col*/, board) {
       if (board[i][j] === number) return false;
     }
   }
-  return true; //если все 3 проверки прошли то число подходит
+  return true; // если все 3 проверки прошли то число подходит
+}
+
+// функция заполняет пустые клетки цифрами
+function fillNumber(board) {
+  const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  // eslint-disable-next-line no-restricted-syntax
+  for (const number of numbers) {
+    const position = findEmptyField(board);
+    if (checkValidity(number, position, board) === true) {
+      const [i, j] = position;
+      board[i][j] = number;
+    } else fillNumber(board);
+  }
+  return board;
 }
 
 const proverka = [
@@ -89,6 +99,7 @@ function isSolved(board) {
     return false;
   }
 }
+
 // console.log(isSolved(proverka));
 
 function arrToString(arr) {
