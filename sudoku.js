@@ -1,3 +1,6 @@
+const gradient = require('gradient-string');
+const tinycolor = require("tinycolor2");
+
 function solve(boardString) {
   const board = [];
   let arrBoard = boardString.split("");
@@ -97,7 +100,19 @@ console.log(isSolved(proverka));
  * Возвращает строку с игровым полем для последующего вывода в консоль.
  * Подумай, как симпатичнее сформировать эту строку.
  */
-function prettyBoard(board) {}
+ function prettyBoard(board) {
+  specialBoard = board.map((elem) =>  '\n' + '|   ' + elem.join('-') + '   |' + '\n'  ).join('');
+  let coolGradient = gradient(tinycolor.random(),tinycolor.random(),tinycolor.random(),tinycolor.random())
+
+
+  console.log(coolGradient(specialBoard))
+    
+  
+  return coolGradient(specialBoard)
+  
+
+}
+
 
 // Экспортировать функции для использования в другом файле (например, readAndSolve.js).
 module.exports = {
