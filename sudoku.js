@@ -1,4 +1,4 @@
-const gradient = require('gradient-string');
+const gradient = require("gradient-string");
 const tinycolor = require("tinycolor2");
 
 function solve(boardString) {
@@ -65,11 +65,6 @@ function checkValidity(number, position /*row, col*/, board) {
   return true; //если все 3 проверки прошли то число подходит
 }
 
-/**
- * Принимает игровое поле в том формате, в котором его вернули из функции solve.
- * Возвращает булевое значение — решено это игровое поле или нет.
- */
-
 const proverka = [
   ["1", "4", "5", "8", "9", "2", "6", "7", "3"],
   ["8", "9", "3", "1", "7", "6", "4", "2", "5"],
@@ -94,25 +89,38 @@ function isSolved(board) {
     return false;
   }
 }
-console.log(isSolved(proverka));
-/**
- * Принимает игровое поле в том формате, в котором его вернули из функции solve.
- * Возвращает строку с игровым полем для последующего вывода в консоль.
- * Подумай, как симпатичнее сформировать эту строку.
- */
- function prettyBoard(board) {
-  specialBoard = board.map((elem) =>  '\n' + '|   ' + elem.join('-') + '   |' + '\n'  ).join('');
-  let coolGradient = gradient(tinycolor.random(),tinycolor.random(),tinycolor.random(),tinycolor.random())
+// console.log(isSolved(proverka));
 
-
-  console.log(coolGradient(specialBoard))
-    
-  
-  return coolGradient(specialBoard)
-  
-
+function arrToString(arr) {
+  return arr
+    .map((line) => {
+      return line.join("");
+    })
+    .join("");
 }
 
+function prettyBoard(board) {
+  const stringBoard = arrToString(board);
+  let coolBoard = stringBoard.match(/.{9}/g).map((el) => {
+    el = el.split("");
+    el.unshift("|");
+    el.push("|");
+    el.splice(4, 0, "|");
+    el.splice(8, 0, "|");
+    return el;
+  });
+
+  const veryCoolBoard = coolBoard.map((el) => el.join(" ")).join("\n");
+  const coolGradient = gradient(
+    tinycolor.random(),
+    tinycolor.random(),
+    tinycolor.random(),
+    tinycolor.random()
+  );
+  console.log(coolGradient(veryCoolBoard));
+  return coolGradient(veryCoolBoard);
+}
+prettyBoard(proverka);
 
 // Экспортировать функции для использования в другом файле (например, readAndSolve.js).
 module.exports = {
