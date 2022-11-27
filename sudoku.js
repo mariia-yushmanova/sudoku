@@ -1,6 +1,5 @@
 import gradient from 'gradient-string';
 import tinycolor from 'tinycolor2';
-
 import chalkAnimation from 'chalk-animation';
 
 // функция формирующая из строки массив с игровым полем
@@ -12,8 +11,9 @@ function getBoard(boardString) {
     }
     return board;
   }
-  // функция проверки наличия пустых ячеек на поле
-  // возаращает true или false
+
+// функция проверки наличия пустых ячеек на поле
+// возаращает true или false
   function checkEmpty(board) {
     for (let i = 0; i < 9; i += 1) {
       for (let j = 0; j < 9; j += 1) {
@@ -24,8 +24,9 @@ function getBoard(boardString) {
     }
     return false;
   }
-  // функция проверяющая возможные решения
-  // возвращает массив с возможными для решения цифрами
+  
+// функция проверяющая возможные решения
+// возвращает массив с возможными для решения цифрами
   function checkSolve(position, board) {
     const [i, j] = position;
     const numbers = {
@@ -67,6 +68,7 @@ function getBoard(boardString) {
     }
     return Object.keys(numbers);
   }
+  
   // функция решающая судоку
   // пока решает только первые 5 досок
   // вопрос зацикленности все еще открыт
@@ -89,25 +91,15 @@ function getBoard(boardString) {
     }
     return board;
   }
-  /**
-   * Принимает игровое поле в формате строки — как в файле sudoku-puzzles.txt.
-   * Возвращает игровое поле после попытки его решить.
-   * Договорись со своей командой, в каком формате возвращать этот результат.
-   */// console.log()
-// console.log(`Судоку №${Number(process.argv[2])} решён успешно!`)
-  function solve(boardString) {
-    
+ 
+function solve(boardString) {
     const board = getBoard(boardString);
     getSolve(board);
     if (checkEmpty(board) === false) getSolve(board);
-    // console.log(board);
     return board;
-  }
-  /**
-   * Принимает игровое поле в том формате, в котором его вернули из функции solve.
-   * Возвращает булевое значение — решено это игровое поле или нет.
-   */
-  function isSolved(board) {
+}
+
+function isSolved(board) {
     let sum = 0;
     for (let i = 0; i < board.length; i += 1) {
       const sumStr = board[i].reduce((a, b) => Number(a) + Number(b));
@@ -115,12 +107,8 @@ function getBoard(boardString) {
     }
     return (sum === 405);
   }
-  /**
-   * Принимает игровое поле в том формате, в котором его вернули из функции solve.
-   * Возвращает строку с игровым полем для последующего вывода в консоль.
-   * Подумай, как симпатичнее сформировать эту строку.
-   */
-  function prettyBoard(board) {
+
+function prettyBoard(board) {
     const solvedBoard = [];
     for (let j = 0; j < board.length; j += 1) {
       if (j % 3 === 0) solvedBoard.push('\n');
@@ -142,7 +130,6 @@ function getBoard(boardString) {
 
 //------------------------------------------------------------
 
-
 const coolGradient = gradient(
   tinycolor.random(),
   tinycolor.random(),
@@ -150,12 +137,11 @@ const coolGradient = gradient(
   tinycolor.random()
 );
 
-
-
 // тут мы возвращаем борду и она крутиться в "цикле" чтобы была анимация
-const result = `${solvedBoard.join('')}`
+  const result = `${veryCoolBoard}`;
 
 const rainbow = chalkAnimation.rainbow(result); // Animation starts
+
 
 setTimeout(() => {
   rainbow.stop(); // Animation stops
@@ -164,9 +150,6 @@ setTimeout(() => {
 setTimeout(() => {
   rainbow.start(); // Animation resumes
 }, 2000);
-
-
-
 
 const ninja = `
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠢⣤⡄⠀⠀⠀⠀⠀⠀⠀⠀
@@ -182,11 +165,6 @@ const ninja = `
 ⠀⠈⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 `
 
-
-
-
-
-
 //------------------------------------------------------------
 
     return coolGradient(ninja);
@@ -198,4 +176,3 @@ const ninja = `
     isSolved,
     prettyBoard,
   };
-  
