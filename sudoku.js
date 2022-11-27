@@ -1,5 +1,8 @@
-const gradient = require("gradient-string");
-const tinycolor = require("tinycolor2");
+// const gradient = require("gradient-string");
+// const tinycolor = require("tinycolor2");
+import gradient from "gradient-string";
+import tinycolor from "tinycolor2";
+import chalkAnimation from "chalk-animation";
 
 function checkValidity(currPos, arrBoard, num) {
   const [y, x] = currPos;
@@ -47,7 +50,7 @@ function solve(boardString) {
     const check = arrBoardSplit.slice(i, i + 9);
     arrBoard.push(check);
   }
-  step = () => {
+  const step = () => {
     const currPos = findEmptyField(arrBoard);
     if (currPos === null) {
       return true;
@@ -158,14 +161,26 @@ function prettyBoard(board) {
     tinycolor.random(),
     tinycolor.random()
   );
-  // console.log(coolGradient(veryCoolBoard));
-  return coolGradient(veryCoolBoard);
+
+  // тут мы возвращаем борду и она крутиться в "цикле" чтобы была анимация
+  const result = `${veryCoolBoard}`;
+
+  const rainbow = chalkAnimation.rainbow(result); // Animation starts
+
+  setTimeout(() => {
+    rainbow.stop(); // Animation stops
+  }, 1000);
+
+  setTimeout(() => {
+    rainbow.start(); // Animation resumes
+  }, 2000);
+
+  const gradiented = coolGradient(veryCoolBoard);
+  const animated = chalkAnimation.glitch(gradiented, 2);
+  // тут возвращается не таблица а заглушка
+  return coolGradient("<========================>");
 }
 // prettyBoard(proverka);
 
 // Экспортировать функции для использования в другом файле (например, readAndSolve.js).
-module.exports = {
-  solve,
-  isSolved,
-  prettyBoard,
-};
+export { solve, isSolved, prettyBoard };
