@@ -1,9 +1,133 @@
 const gradient = require("gradient-string");
 const tinycolor = require("tinycolor2");
 
-function findEmptyField(arrBoard) {
-  for (let y = 0; y < 9; y += 1) {
-    for (let x = 0; x < 9; x += 1) {
+// function findEmptyField(board) {
+//   for (let y = 0; y < 9; y += 1) {
+//     for (let x = 0; x < 9; x += 1) {
+//       if (board[y][x] === "-") {
+//         return [y, x];
+//       }
+//     }
+//   }
+//   return null;
+// }
+
+// function checkValidity(position, board, num) {
+//   const [y, x] = position;
+//   const boardSize = 9;
+//   // проверка наличия числа в столбце
+//   for (let i = 0; i < boardSize; i += 1) {
+//     if (Number(board[y][i] === num && i !== x)) return false;
+//   }
+//   // проверка наличия числа в строке
+//   for (let i = 0; i < boardSize; i += 1) {
+//     if (Number(board[i][x] === num && i !== y)) return false;
+//   }
+//   // проверка наличия числа в блоке 3х3
+//   const blockRowStart = Math.floor(y / 3) * 3;
+//   const blockColStart = Math.floor(x / 3) * 3;
+
+//   for (let i = blockRowStart; i < 3 + blockRowStart; i += 1) {
+//     for (let j = blockColStart; j < 3 + blockColStart; j += 1) {
+//       if (Number(board[i][j] === num && i !== y && j !== x)) return false;
+//     }
+//   }
+//   return true; // если все 3 проверки прошли то число подходит
+// }
+
+// function solve(boardString) {
+//   const board = [];
+//   const arrBoard = boardString.split("");
+//   for (let i = 0; i < arrBoard.length; i += 9) {
+//     const check = arrBoard.slice(i, i + 9);
+//     board.push(check);
+//   }
+//   const step = () => {
+//     const position = findEmptyField(board);
+//     if (position === null) {
+//       return true;
+//     }
+//     for (let num = 1; num <= 9; num += 1) {
+//       const isValid = checkValidity(position, board, num);
+//       // console.log(isValid);
+
+//       if (isValid) {
+//         const [y, x] = position;
+//         board[y][x] = String(num);
+
+//         if (step()) {
+//           return true;
+//         }
+//         board[y][x] = "-";
+//       }
+//     }
+//     return false;
+//   };
+//   step();
+//   return board;
+// }
+
+function validate(currPos, arrBoard, num, boxSize) {
+  const [y, x] = currPos;
+
+  for (let i = 0; i < size; i++) {
+    if (Number(arrBoard[y][i]) === num && i !== x) {
+      return false;
+    }
+  }
+
+  for (let i = 0; i < size; i++) {
+    if (Number(arrBoard[i][x]) === num && i !== y) {
+      return false;
+    }
+  }
+
+  const firstBlockOfBoxY = Math.floor(y / boxSize) * boxSize;
+  const firstBlockOfBoxX = Math.floor(x / boxSize) * boxSize;
+
+  for (let i = firstBlockOfBoxY; i < boxSize + firstBlockOfBoxY; i++) {
+    for (let j = firstBlockOfBoxX; j < boxSize + firstBlockOfBoxX; j++) {
+      if (Number(arrBoard[i][j]) === num && i !== y && j !== x) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+const size = 9;
+const boxSize = 3;
+function solve(string) {
+  const arrBoard = stringToArr(string);
+  step = () => {
+    const currPos = findEmptySpace(arrBoard);
+    if (currPos === null) {
+      return true;
+    }
+    for (let num = 1; num <= size; num += 1) {
+      const isValid = validate(currPos, arrBoard, num);
+      if (isValid) {
+        const [y, x] = currPos;
+        arrBoard[y][x] = String(num);
+        if (step()) {
+          return true;
+        }
+        arrBoard[y][x] = "-";
+      }
+    }
+    return false;
+  };
+  step();
+  return arrBoard;
+}
+function stringToArr(boardString) {
+  const re = /.{9}/g;
+  return boardString.match(re).map((line) => {
+    return line.split("");
+  });
+}
+function findEmptySpace(arrBoard) {
+  for (let y = 0; y < size; y += 1) {
+    for (let x = 0; x < size; x += 1) {
       if (arrBoard[y][x] === "-") {
         return [y, x];
       }
@@ -12,69 +136,11 @@ function findEmptyField(arrBoard) {
   return null;
 }
 
-function checkValidity(position, board, num) {
-  const [y, x] = position;
-  const boardSize = 9;
-  // проверка наличия числа в столбце
-  for (let i = 0; i < boardSize; i += 1) {
-    if (Number(board[y][i] === num && i !== x)) return false;
-  }
-  // проверка наличия числа в строке
-  for (let i = 0; i < boardSize; i += 1) {
-    if (Number(board[i][x] === num && i !== y)) return false;
-  }
-  // проверка наличия числа в блоке 3х3
-  const blockRowStart = Math.floor(y / 3) * 3;
-  const blockColStart = Math.floor(x / 3) * 3;
-
-  for (let i = blockRowStart; i < 3 + blockRowStart; i += 1) {
-    for (let j = blockColStart; j < 3 + blockColStart; j += 1) {
-      if (Number(board[i][j] === num && i !== y && j !== x)) return false;
-    }
-  }
-  return true; // если все 3 проверки прошли то число подходит
-}
-
-function solve(boardString) {
-  const board = [];
-  const arrBoard = boardString.split("");
-  for (let i = 0; i < arrBoard.length; i += 9) {
-    const check = arrBoard.slice(i, i + 9);
-    board.push(check);
-  }
-  // console.log(board);
-  step = () => {
-    const position = findEmptyField(board);
-    if (position === null) {
-      return true;
-    }
-    // console.log(position);
-    for (let num = 1; num <= 9; num += 1) {
-      const isValid = checkValidity(position, board, num);
-      // console.log(isValid);
-
-      if (isValid) {
-        const [y, x] = position;
-        board[y][x] = String(num);
-
-        if (step()) {
-          return true;
-        }
-
-        board[y][x] = "-";
-      }
-    }
-    return false;
-  };
-  step();
-  return board;
-}
-
-console.log(
-  solve(
-    "1-58-2----9--764-52--4--819-19--73-6762-83-9-----61-5---76---3-43--2-5-16--3-89--"
-  )
-);
+// console.log(
+//   solve(
+//     "1-58-2----9--764-52--4--819-19--73-6762-83-9-----61-5---76---3-43--2-5-16--3-89--"
+//   )
+// );
 
 //  функция ищет первую попавшуюся чёрточку и возвращает её индекс
 // function findEmptyField(board) {
