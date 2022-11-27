@@ -138,7 +138,7 @@ const coolGradient = gradient(
 );
 
 // тут мы возвращаем борду и она крутиться в "цикле" чтобы была анимация
-  const result = `${veryCoolBoard}`;
+  const result = `${solvedBoard.join('')}`;
 
 const rainbow = chalkAnimation.rainbow(result); // Animation starts
 
