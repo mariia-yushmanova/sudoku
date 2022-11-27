@@ -3,16 +3,30 @@
 import gradient from 'gradient-string';
 import tinycolor from 'tinycolor2';
 
-import chalkAnimation from 'chalk-animation';
 import * as sudoku from './sudoku.js'
+import chalk from 'chalk';
+// import * as sudoku from './sudokuNew.js'
 // const { solve, isSolved, prettyBoard } = require('./sudoku');
 
 function readAndSolve(error, fileData) {
   // Если чтение файла не удалось, выбросить ошибку с описанием проблемы и
+  
   // завершить работу функции.
+  
+const coolGradientT = gradient(
+  tinycolor.random(),
+  tinycolor.random(),
+  tinycolor.random(),
+  tinycolor.random()
+);
+
+
+  
   if (error) {
+   
     throw error;
   }
+  
 
   // Разбить содержимое файла построчно и отфильтровать все пустые строки.
   const puzzles = fileData
@@ -30,7 +44,7 @@ function readAndSolve(error, fileData) {
   // Получить желаемый судоку по индексу и вывести его в консоль.
   const puzzle = puzzles[puzzleNumber - 1];
   // console.log(`Решаем судоку №${puzzleNumber}:`);
-  console.log(puzzle, '\n');
+  console.log(chalk.rgb(255,20,147).bgGray(puzzle, '\n'));
 
 
   
@@ -40,12 +54,13 @@ function readAndSolve(error, fileData) {
 
   // Использовать функцию isSolved из файла sudoku.js для проверки решения судоку.
   if (!sudoku.isSolved(solvedPuzzle)) {
-    console.log(`Не смогли решить судоку №${puzzleNumber} :(`, '\n');
+    console.log(`Не смогли решить судоку №   ${ puzzleNumber} :(`, '\n');
     return; // Если судоку не решён, завершить работу этой функции.
   }
 
   // Код ниже сработает, только если проверка решения судоку прошла успешно.
-  console.log(`Судоку №${puzzleNumber} решён успешно!`);
+  let done = `Судоку №  ${puzzleNumber} решён успешно!`
+  console.log(coolGradientT(done));
 
   // Использовать функцию prettyBoard из файла sudoku.js для форматирования
   // игрового поля в строку в желаемом формате.
