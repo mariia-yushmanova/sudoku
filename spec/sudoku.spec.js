@@ -19,7 +19,4 @@ describe("Решение судоку", () => {
       )
     ).toEqual(arr);
   });
-  it("checkValidity returns truthy value", () => {
-    expect(isSolved(arr)).toBeTruthy();
-  });
 });
